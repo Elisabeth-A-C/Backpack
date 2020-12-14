@@ -1,4 +1,17 @@
-//The price/value for the items. //<>//
+//Global variables created to implement UserInterface. //<>//
+heading UIheading;
+thingsInTheBackpack UIthingsInTheBackpack;
+graph UIgraph;
+button UIbutton;
+information UIinformation;
+
+//Change the start population size by changing this number.
+int startPopulationSize = 20;
+
+//Change the percentage of the mutation by changing this number.
+float mutationPercent = 0.1;
+
+//The price/value for the items.
 int maxPrice;
 
 //Generate an array for the arrays of the generations.
@@ -8,8 +21,19 @@ generation[] generations;
 int numberOfGenerations = 0;
 
 void setup() {
-  size(500, 500);
-  background(200);
+  size(800, 950);
+  background(220);
+  //Implement setup-functions in UserInterface.
+  UIheading = new heading();
+  UIheading.setup(0, 0, 800, 160);
+  UIthingsInTheBackpack = new thingsInTheBackpack();
+  UIthingsInTheBackpack.setup(0, 160, 350, 1140);
+  UIgraph = new graph();
+  UIgraph.setup(350, 500, 550, 450);
+  UIbutton = new button();
+  UIbutton.setup(350, 160, 550, 120);
+  UIinformation = new information();
+  UIinformation.setup(350, 280, 550, 230);
 
   //There will be a max of 10000 generations.
   generations = new generation[10000];
@@ -21,7 +45,7 @@ void setup() {
   }
 
   //Step 1: We generate the 1. and 2. generation randomly.
-  for (int g = 0; g < 20; g++) {
+  for (int g = 0; g < startPopulationSize; g++) {
     generations[g] = new generation();
     generations[g].createFirstGeneration();
     numberOfGenerations++;
@@ -29,6 +53,13 @@ void setup() {
 }
 
 void draw() {
+  //Implement draw-functions in UserInterface.
+  UIheading.draw();
+  UIthingsInTheBackpack.draw();
+  UIgraph.draw();
+  UIbutton.draw();
+  UIinformation.draw();
+
   //In the draw function, we generate the next generations after the first generation, generated from the previous generation.'
   if (numberOfGenerations >= 1000) { //TO-DO: 10000 not 1000!
     return;

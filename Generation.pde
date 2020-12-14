@@ -75,7 +75,7 @@ class generation {
   void mutate() {
     for (int i = 0; i < 24; i++) {
       float mutate = random(1);
-      if (mutate < 0.1) {
+      if (mutate < mutationPercent) {
         if (selectedOrNot[i] == 0) {
           selectedOrNot[i] = 1;
           calcMass();
