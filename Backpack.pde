@@ -53,13 +53,6 @@ void setup() {
 }
 
 void draw() {
-  //Implement draw-functions in UserInterface.
-  UIheading.draw();
-  UIthingsInTheBackpack.draw();
-  UIgraph.draw();
-  UIbutton.draw();
-  UIinformation.draw();
-
   //In the draw function, we generate the next generations after the first generation, generated from the previous generation.'
   if (numberOfGenerations >= 1000) { //TO-DO: 10000 not 1000!
     return;
@@ -97,6 +90,11 @@ void draw() {
   print(highestFitness.fitness());
   print(" : ");
 
+  //Set UIinformation for current values of highestFitness.
+  UIinformation.informationMass = highestFitness.mass;
+  UIinformation.informationPrice = highestFitness.price;
+  UIinformation.informationFitness = highestFitness.fitness();
+
   //B. Crossover - create a "child" by combining the DNA of these two parents.
   generations[numberOfGenerations] = highestFitness.crossover(secondHighestFitness);
   print(generations[numberOfGenerations].fitness()); //TO-DO: Del this.
@@ -108,4 +106,11 @@ void draw() {
 
   //Move on to the next generation.
   numberOfGenerations++;
+
+  //Implement draw-functions in UserInterface.
+  UIheading.draw();
+  UIthingsInTheBackpack.draw();
+  UIgraph.draw();
+  UIbutton.draw();
+  UIinformation.draw();
 }
