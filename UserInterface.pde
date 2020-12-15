@@ -11,51 +11,94 @@ class UIelements {
     UIy = y;
     UIw = w;
     UIh = h;
-    
-    //noStroke();
   }
 }
 
 class heading extends UIelements {
   void draw() {
-    fill(200,240,250);
+    fill(200, 240, 250);
     rect(UIx, UIy, UIw, UIh);
+
     PFont f = createFont("Stencil", 65);
     textFont(f);
     fill(40);
     text("Pak rygsæk", UIx+UIw*0.265, UIy+UIh*0.6);
     textSize(20);
     text("Når det gælder om at pakke rygsækken med den højeste pris.", UIx+UIw*0.09, UIy+UIh*0.8);
-    
   }
 }
 
 class thingsInTheBackpack extends UIelements {
+  String[] item = {"kort", "kompas", "vand", "sandwich", "sukker", "dåsemad", "banan", "æble", "ost", "øl", "solcreme", "kamera", "t-shirt", "bukser", "bukser", "paraply", "vandtætte bukser", "vandtæt overtøj", "pung", "solbriller", "håndklæde", "sokker", "bog", "notesbog", "telt"};
+  int[] selectedOrNot;
+
   void draw() {
-    fill(200,240,240);
+    fill(200, 240, 240);
     rect(UIx, UIy, UIw, UIh);
+
+    //Header.
     PFont f = createFont("Stencil", 25);
     textFont(f);
     fill(40);
-    text("Ting i rygsækken", UIx+UIw*0.180, UIy+UIh*0.03);
+    text("Ting i rygsækken", UIx+UIw*0.1, UIy+UIh*0.04);
+
+    //Which things are in the backpack. Green = in the backpack; gray = not in the backpack.
+    textSize(15);
+    for (int i = 0; i < 24; i++) {
+      if (selectedOrNot[i] == 1) {
+        fill(50, 210, 50);
+      } else {
+        fill(200, 200);
+      }
+      text(item[i], UIx+UIw*0.1, UIy+UIh*0.07+27*i);
+    }
   }
 }
 
 class graph extends UIelements {
   void draw() {
-    fill(200,240,240);
+    fill(200, 240, 240);
     rect(UIx, UIy, UIw, UIh);
+
+    //Header.
     PFont f = createFont("Stencil", 25);
     textFont(f);
     fill(40);
     text("Udvikling af pris", UIx+UIw*0.185, UIy+UIh*0.1);
+
+    //Draw graph.
+    fill(0, 0);
+    rect(UIx+UIw*0.075, UIy+UIh*0.15, 365, 365);
   }
 }
 
 class button extends UIelements {
+  boolean clickedOnTheButton = false;
+
   void draw() {
-    fill(200,240,240);
+    fill(200, 240, 240);
     rect(UIx, UIy, UIw, UIh);
+
+    //The button.
+    if (clickedOnTheButton == false) {
+      fill(0, 200, 0);
+    } else {
+      fill(0, 100, 0);
+    }
+    rect(UIx+UIw*0.1, UIy+UIh*0.1, 335, 97, 8);
+
+    fill(20);
+    textSize(30);
+    text("Pak rygsækken", UIx+UIw*0.175, UIy+UIh*0.58);
+  }
+
+  boolean mouseClicked(int x, int y) {
+    if (x > UIx+UIw*0.1 && x < UIx+UIw*0.1+335 && y > UIy+UIh*0.1 && y < UIy+UIh*0.1+97) {
+      clickedOnTheButton = true;
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 
@@ -65,7 +108,7 @@ class information extends UIelements {
   float informationFitness;
 
   void draw() {
-    fill(200,240,240);
+    fill(200, 240, 240);
     rect(UIx, UIy, UIw, UIh);
     fill(0);
     textSize(25);
