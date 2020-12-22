@@ -1,4 +1,4 @@
-//Defining the objects that are going to fit into the bagpack. //<>//
+//Defining the objects that are going to fit into the bagpack. //<>// //<>//
 int[] massList = {90, 130, 1530, 500, 150, 680, 270, 390, 230, 520, 110, 320, 240, 480, 730, 420, 430, 220, 70, 180, 40, 300, 900, 2000};
 int[] priceList = {150, 35, 200, 160, 60, 45, 60, 40, 30, 10, 70, 30, 15, 10, 40, 70, 75, 80, 20, 12, 50, 10, 1, 150};
 

@@ -11,21 +11,15 @@ button UIbutton;
 information UIinformation;
 
 //Change the start population size by changing this number.
-int startPopulationSize = 20;
+int startPopulationSize = 100;
 
 //Change the percentage of the mutation by changing this number.
-float mutationPercent = 0.1;
+float mutationPercent = 0.05;
 
-//Change the number of iterations.
-int numberOfIterations = 1000;
-
-//The price/value for the items.
+//The price/value for the item.
 int maxPrice;
 //Generate an array for the arrays of the generations.
 generation[] generations;
-
-//Current generation.
-int numberOfGenerations = 0;
 
 void setup() {
   size(800, 950);
@@ -57,62 +51,59 @@ void setup() {
   for (int g = 0; g < startPopulationSize; g++) {
     generations[g] = new generation();
     generations[g].createFirstGeneration();
-    numberOfGenerations++;
   }
 }
 
 void draw() {
   if (runCode) {
-    //In the draw function, we generate the next generations after the first generation, generated from the previous generation.'
-    if (numberOfGenerations >= numberOfIterations) { 
-      runCode = false;
-      UIbutton.clickedOnTheButton = false;
-      return;
-    }
-    //Step 2: Calculate fitness of each item.
-    float fitness = generations[numberOfGenerations - 1].fitness();
+    //In the draw function, we generate the next generations after the first generation, generated from the previous generation.
+    int s = UIgraph.bestPrice.size();
 
-    //Step 3: Design next generation.
-    //A. Pick the two parents with the highest fitness.
-    generation highestFitness;
-    generation secondHighestFitness;
-
-    if (generations[0].fitness() > generations[1].fitness()) {
-      highestFitness = generations[0];
-      secondHighestFitness = generations[1];
-    } else {
-      highestFitness = generations[1];
-      secondHighestFitness = generations[0];
-    }
-    for (int g = 2; g < numberOfGenerations; g++) {
-      if (generations[g].fitness() > highestFitness.fitness()) {
-        secondHighestFitness = highestFitness;
-        highestFitness = generations[g];
-      } else if (generations[g].fitness() > secondHighestFitness.fitness()) {
-        secondHighestFitness = generations[g];
+    if (s > 500) { 
+      int a = UIgraph.bestPrice.get(s-501);
+      int b = UIgraph.bestPrice.get(s-1);
+      if (a==b) {
+        runCode = false;
+        UIbutton.clickedOnTheButton = false;
+        return;
       }
     }
 
-    //B. Crossover - create a "child" by combining the DNA of these two parents.
-    generations[numberOfGenerations] = highestFitness.crossover(secondHighestFitness);
+    //Step 2: Calculate fitness of each item. This is done on the fly in the function "fitness()".
 
-    //C. Mutation - mutate the child's DNA based on the probability of 10%. For every item in the generation will there be 1% chance for mutation.
-    generations[numberOfGenerations].mutate();
-    if (generations[numberOfGenerations].fitness() > highestFitness.fitness()) {
-      highestFitness = generations[numberOfGenerations];
+    //Step 3: Design next generation.
+    //A. Pick the parents with the highest fitness.
+    generation newGeneration[] = new generation[startPopulationSize];
+
+    for (int g = 0; g < startPopulationSize; g++) {
+      float r;
+      int p1;
+      int p2;
+
+      r = random(1);
+      p1 = floor(startPopulationSize*pow(r, 4));
+      do {
+        r = random(1);
+        p2 =  floor(startPopulationSize*pow(r, 4));
+      } while (p1 == p2);
+
+      //B. Crossover - create a "child" by combining the DNA of these two parents.
+      newGeneration[g] = generations[p1].crossover(generations[p2]);
+
+      //C. Mutation - mutate the child's DNA based on the probability of 10%. For every item in the generation will there be 1% chance for mutation.
+      newGeneration[g].mutate();
     }
+    sortGeneration(newGeneration);
 
-    //Set UIinformation for current values of highestFitness.
-    UIinformation.informationMass = highestFitness.mass;
-    UIinformation.informationPrice = highestFitness.price;
-    UIinformation.informationFitness = highestFitness.fitness();
-    UIthingsInTheBackpack.selectedOrNot = highestFitness.selectedOrNot;
+    //Set UIinformation for current values of the highest fitness which is newGeneration[0] (set in the function "sortGeneration()").
+    UIinformation.informationMass = newGeneration[0].mass;
+    UIinformation.informationPrice = newGeneration[0].price;
+    UIinformation.informationFitness = newGeneration[0].fitness();
+    UIthingsInTheBackpack.selectedOrNot = newGeneration[0].selectedOrNot;
+    UIgraph.bestPrice.add(newGeneration[0].price);
 
-    //Save highest price for the current generation.
-    generations[numberOfGenerations].currentMaxPrice = highestFitness.price;
-
-    //Move on to the next generation.
-    numberOfGenerations++;
+    //Delete old generation.
+    generations = newGeneration;
   }
 
   //Implement draw-functions in UserInterface.
@@ -123,9 +114,27 @@ void draw() {
   UIinformation.draw();
 }
 
+void sortGeneration(generation[] gen) {
+  for (int i = 0; i < gen.length-1; i++) {
+
+    for (int j = 0; j < gen.length-i-1; j++) {
+      if (gen[j].fitness() < gen[j+1].fitness()) {
+        generation temp = gen[j];
+        gen[j] = gen[j+1];
+        gen[j+1] = temp;
+      }
+    }
+  }
+}
+
 void mouseClicked() {
   if (UIbutton.mouseClicked(mouseX, mouseY)) {
     runCode = true;
-    numberOfGenerations = startPopulationSize;
+    UIgraph.bestPrice.clear();
+
+    for (int g = 0; g < startPopulationSize; g++) {
+      generations[g] = new generation();
+      generations[g].createFirstGeneration();
+    }
   }
 }

@@ -56,6 +56,8 @@ class thingsInTheBackpack extends UIelements {
 }
 
 class graph extends UIelements {
+  ArrayList<Integer> bestPrice = new ArrayList<Integer>();
+
   void draw() {
     fill(200, 240, 240);
     rect(UIx, UIy, UIw, UIh);
@@ -78,9 +80,9 @@ class graph extends UIelements {
     int previousXPos = 0;
     int previousYPos = 0;
 
-    for (int i = 0; i < numberOfGenerations; i++) {
-      int xPos = round(((float)365 / (float)numberOfIterations) * (float)i);
-      int yPos = round(((float)365 / (float)maxPrice) * (float)generations[i].currentMaxPrice);
+    for (int i = 0; i < bestPrice.size(); i++) {
+      int xPos = round(((float)365 / (float)bestPrice.size()) * (float)i);
+      int yPos = round(((float)365 / (float)maxPrice) * (float)bestPrice.get(i));
 
       //Set point.
       line(UIx+UIw*0.075+previousXPos, UIy+UIh*0.15+365-previousYPos, UIx+UIw*0.075+xPos, UIy+UIh*0.15+365-yPos);
