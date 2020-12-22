@@ -6,6 +6,7 @@ class generation {
   int[] selectedOrNot = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   int mass;
   int price;
+  int currentMaxPrice;
 
   //Create first generation.
   void createFirstGeneration() {
@@ -30,7 +31,7 @@ class generation {
     if (mass > 5000) {
       return(0);
     } else {
-      //high price = high fitness
+      //High price = high fitness.
       return((float)price / (float)maxPrice);
     }
   }

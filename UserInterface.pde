@@ -69,6 +69,24 @@ class graph extends UIelements {
     //Draw graph.
     fill(0, 0);
     rect(UIx+UIw*0.075, UIy+UIh*0.15, 365, 365);
+    fill(0);
+    textSize(20);
+    text("Pris", UIx+UIw*0.09, UIy+UIh*0.2);
+    text("Antal iterationer", UIx+UIw*0.3675, UIy+UIh*0.935);
+
+    //Draw graph function.
+    int previousXPos = 0;
+    int previousYPos = 0;
+
+    for (int i = 0; i < numberOfGenerations; i++) {
+      int xPos = round(((float)365 / (float)numberOfIterations) * (float)i);
+      int yPos = round(((float)365 / (float)maxPrice) * (float)generations[i].currentMaxPrice);
+
+      //Set point.
+      line(UIx+UIw*0.075+previousXPos, UIy+UIh*0.15+365-previousYPos, UIx+UIw*0.075+xPos, UIy+UIh*0.15+365-yPos);
+      previousXPos = xPos;
+      previousYPos = yPos;
+    }
   }
 }
 

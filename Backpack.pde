@@ -16,6 +16,9 @@ int startPopulationSize = 20;
 //Change the percentage of the mutation by changing this number.
 float mutationPercent = 0.1;
 
+//Change the number of iterations.
+int numberOfIterations = 1000;
+
 //The price/value for the items.
 int maxPrice;
 //Generate an array for the arrays of the generations.
@@ -61,17 +64,13 @@ void setup() {
 void draw() {
   if (runCode) {
     //In the draw function, we generate the next generations after the first generation, generated from the previous generation.'
-    if (numberOfGenerations >= 1000) { //TO-DO: 10000 not 1000!
+    if (numberOfGenerations >= numberOfIterations) { 
       runCode = false;
-      numberOfGenerations = startPopulationSize;
       UIbutton.clickedOnTheButton = false;
       return;
     }
     //Step 2: Calculate fitness of each item.
     float fitness = generations[numberOfGenerations - 1].fitness();
-    /*println(generations[numberOfGenerations - 1].selectedOrNot);
-     println(generations[numberOfGenerations - 1].mass);
-     println(fitness);*/
 
     //Step 3: Design next generation.
     //A. Pick the two parents with the highest fitness.
@@ -93,12 +92,15 @@ void draw() {
         secondHighestFitness = generations[g];
       }
     }
-    print(numberOfGenerations);
-    print(" : ");
-    print(highestFitness.price);
-    print(" : ");
-    print(highestFitness.fitness());
-    print(" : ");
+
+    //B. Crossover - create a "child" by combining the DNA of these two parents.
+    generations[numberOfGenerations] = highestFitness.crossover(secondHighestFitness);
+
+    //C. Mutation - mutate the child's DNA based on the probability of 10%. For every item in the generation will there be 1% chance for mutation.
+    generations[numberOfGenerations].mutate();
+    if (generations[numberOfGenerations].fitness() > highestFitness.fitness()) {
+      highestFitness = generations[numberOfGenerations];
+    }
 
     //Set UIinformation for current values of highestFitness.
     UIinformation.informationMass = highestFitness.mass;
@@ -106,14 +108,8 @@ void draw() {
     UIinformation.informationFitness = highestFitness.fitness();
     UIthingsInTheBackpack.selectedOrNot = highestFitness.selectedOrNot;
 
-    //B. Crossover - create a "child" by combining the DNA of these two parents.
-    generations[numberOfGenerations] = highestFitness.crossover(secondHighestFitness);
-    print(generations[numberOfGenerations].fitness()); //TO-DO: Del this.
-    print(" : ");
-
-    //C. Mutation - mutate the child's DNA based on the probability of 10%. For every item in the generation will there be 1% chance for mutation.
-    generations[numberOfGenerations].mutate();
-    println(generations[numberOfGenerations].fitness()); //TO-DO: Del this.
+    //Save highest price for the current generation.
+    generations[numberOfGenerations].currentMaxPrice = highestFitness.price;
 
     //Move on to the next generation.
     numberOfGenerations++;
@@ -130,5 +126,6 @@ void draw() {
 void mouseClicked() {
   if (UIbutton.mouseClicked(mouseX, mouseY)) {
     runCode = true;
+    numberOfGenerations = startPopulationSize;
   }
 }
