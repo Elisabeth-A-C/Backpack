@@ -14,7 +14,7 @@ information UIinformation;
 int startPopulationSize = 100;
 
 //Change the percentage of the mutation by changing this number.
-float mutationPercent = 0.05;
+float mutationPercent = 0.075;
 
 //The price/value for all items in the backpack.
 int maxPrice;
@@ -39,8 +39,8 @@ void setup() {
   UIinformation = new information();
   UIinformation.setup(350, 280, 550, 230);
 
-  //There will be a max of 10000 generations.
-  generations = new generation[10000];
+  //There will be a max of generations as high as startPopulationSize.
+  generations = new generation[startPopulationSize];
 
   //maxPrice is calculated as the price sum of all items.
   maxPrice = 0;
@@ -48,7 +48,7 @@ void setup() {
     maxPrice = maxPrice + priceList[i];
   }
 
-  //Step 1: We generate the 1. and 2. generation randomly.
+  //Step 1: We generate the first randomly.
   for (int g = 0; g < startPopulationSize; g++) {
     generations[g] = new generation();
     generations[g].createFirstGeneration();
@@ -71,10 +71,10 @@ void draw() {
       }
     }
 
-    //Step 2: Calculate fitness of each item. This is done on the fly in the function "fitness()" in the Generation-file.
+    //Step 2: Calculate fitness of each backpack. This is done on the fly in the function "fitness()" in the Generation-file.
 
     //Step 3: Design next generation.
-    //A. The next generation will be defined by the previous generation. The higher the price, the more likely will it be that the parent is going to be picked in the next generation.
+    //A. The next generation will be defined by the previous generation. The higher the fitness, the more likely will it be that the parent is going to be picked in the next generation.
     generation newGeneration[] = new generation[startPopulationSize];
 
     for (int g = 0; g < startPopulationSize; g++) {
@@ -90,7 +90,7 @@ void draw() {
       } while (p1 == p2);
 
       //B. Crossover - create a "child" by combining the DNA of the two parents.
-      newGeneration[g] = generations[p1].crossover(generations[p2]);
+      newGeneration[g] = generations[p1].crossover(generations[p2]);  
 
       //C. Mutation - mutate the child's DNA based on a probability. For every item in the generation there be a percentage of chance for mutation.
       newGeneration[g].mutate();
@@ -104,7 +104,7 @@ void draw() {
     UIthingsInTheBackpack.selectedOrNot = newGeneration[0].selectedOrNot;
     UIgraph.bestPrice.add(newGeneration[0].price);
 
-    //Delete old generation.
+    //Replace old generation with new generation.
     generations = newGeneration;
   }
 

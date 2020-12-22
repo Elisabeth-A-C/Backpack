@@ -86,7 +86,7 @@ class graph extends UIelements {
       int xPos = round(((float)365 / (float)bestPrice.size()) * (float)i);
       int yPos = round(((float)365 / (float)maxPrice) * (float)bestPrice.get(i));
 
-      //Set point.
+      //Draw line from precious point to new point.
       line(UIx+UIw*0.075+previousXPos, UIy+UIh*0.15+365-previousYPos, UIx+UIw*0.075+xPos, UIy+UIh*0.15+365-yPos);
       previousXPos = xPos;
       previousYPos = yPos;
