@@ -4,7 +4,7 @@ This program will pack the backpack in a way where the mass is under 5000 kg, an
 The genetic algorithm that is used in this program is based on the following concept:
 
 In the setup-function:
-- Step 1: Generate the 1. and 2. generation randomly.
+- Step 1: Generate the first generation randomly.
 
 
 In the draw-function:
@@ -16,8 +16,7 @@ In the draw-function:
 
 # Graph
 The highest price will be found pretty quickly. However, to ensure that it indeed is the highest price that is found (which is 1130), I have chosen to 
-let the program run for 400 generations. That way I ensure that the acutal highest price will be found. Otherwise, the program will sometimes (not often, but sometimes)
-find the solution 1127 instead.
+let the program run until the current price is the same as 400 generations ago. That way I ensure that the actual highest price will be found. Otherwise, the program will sometimes (not often, but sometimes) find the solution 1127 instead.
 
 # Change values in the program.
 In the program, it is possible to change the size of the population, and the chance of mutation. This is done when "startPopulationSize" and "mutationPercent" is create above in the Backpack-file. 
