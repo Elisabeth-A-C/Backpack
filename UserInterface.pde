@@ -6,7 +6,6 @@ class UIelements {
   int UIh;
 
   void setup(int x, int y, int w, int h) {
-    //The position of the title (the object).
     UIx = x;
     UIy = y;
     UIw = w;
@@ -15,6 +14,7 @@ class UIelements {
 }
 
 class heading extends UIelements {
+  //Create the heading.
   void draw() {
     fill(200, 240, 250);
     rect(UIx, UIy, UIw, UIh);
@@ -29,6 +29,7 @@ class heading extends UIelements {
 }
 
 class thingsInTheBackpack extends UIelements {
+  //Create area where you can see which things are in the backpack.
   String[] item = {"kort", "kompas", "vand", "sandwich", "sukker", "dåsemad", "banan", "æble", "ost", "øl", "solcreme", "kamera", "t-shirt", "bukser", "bukser", "paraply", "vandtætte bukser", "vandtæt overtøj", "pung", "solbriller", "håndklæde", "sokker", "bog", "notesbog", "telt"};
   int[] selectedOrNot;
 
@@ -56,6 +57,7 @@ class thingsInTheBackpack extends UIelements {
 }
 
 class graph extends UIelements {
+  //Create graph.
   ArrayList<Integer> bestPrice = new ArrayList<Integer>();
 
   void draw() {
@@ -93,6 +95,7 @@ class graph extends UIelements {
 }
 
 class button extends UIelements {
+  //Create button "Pak rygsæk".
   boolean clickedOnTheButton = false;
 
   void draw() {
@@ -123,6 +126,7 @@ class button extends UIelements {
 }
 
 class information extends UIelements {
+  //Create informations under the button.
   int informationMass;
   int informationPrice;
   float informationFitness;
